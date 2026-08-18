@@ -37,6 +37,8 @@
 1. リポジトリの Settings → General → Default branch が `main` になっているか確認し、違えば `main` に変更する
 2. (すでに `github-pages` 環境が作成されている場合)Settings → Environments → `github-pages` → Deployment branches and tags が `main` を許可しているか確認する
 
+**関連する既知の失敗**: Pages自体が一度も有効化されていないリポジトリでは、`actions/configure-pages@v5` が `Get Pages site failed ... Not Found` で失敗します(default branchの問題とは別物)。これに対応するため `deploy.yml` の `configure-pages@v5` ステップに `enablement: true` を設定し、未有効化時は自動でPagesサイトを作成するようにしています。
+
 ## 移管時に変更した点
 
 - Claude Code移管パッケージ(`growpal-lp-claude-code-handoff`)の内容をそのまま復元し、GitHub Pages公開用に以下を追加・調整しました。
