@@ -26,24 +26,13 @@
 
 詳細は `HANDOFF.md` を確認してください。
 
-## GitHub Pages公開時の注意(default branch)
+## 公開先
 
-このリポジトリは元々コミットが一つもない空リポジトリでした。空リポジトリに対して `main` 以外のブランチ(例: `claude/...`)へ最初に push すると、GitHub はそのブランチを**default branch**として採用してしまいます。その後 `main` に push しても default branch は自動では戻りません。
+このリポジトリはRailwayと連携済みで、Railway上でホスティングします(GitHub Pagesではありません)。ビルドは `pnpm build`、起動は `pnpm start`(`server/index.ts` をesbuildでバンドルしたExpressサーバーが `dist/public` を配信し、SPAフォールバックも兼ねます)。`vite.config.ts` の `base` はルート(`/`)固定で問題ありません。
 
-`.github/workflows/deploy.yml` による GitHub Pages 公開は、初回デプロイ時に自動作成される `github-pages` 環境の「Deployment branches and tags」設定が、その時点の **default branch** を基準に決まります。default branch が `main` でないと、`main` へのデプロイが拒否され(ワークフローの `deploy` ジョブが即座に失敗し)ます。
-
-そのため、空リポジトリへの初回復元・公開作業では、`main` へ push した後に次を確認してください。
-
-1. リポジトリの Settings → General → Default branch が `main` になっているか確認し、違えば `main` に変更する
-2. (すでに `github-pages` 環境が作成されている場合)Settings → Environments → `github-pages` → Deployment branches and tags が `main` を許可しているか確認する
-
-**関連する既知の失敗**: Pages自体が一度も有効化されていないリポジトリでは、`actions/configure-pages@v5` が `Get Pages site failed ... Not Found` で失敗します(default branchの問題とは別物)。これに対応するため `deploy.yml` の `configure-pages@v5` ステップに `enablement: true` を設定し、未有効化時は自動でPagesサイトを作成するようにしています。
+`Booking.tsx`・`Seminar.tsx` はカレンダー空き状況の取得・予約送信のどちらもGAS(Google Apps Script)のWeb App URLへブラウザから直接fetchする構成で、`server/`側にはtRPCやDB連携などのAPI層は一切ありません(`doctor-lp`・`kanbe-lp`の個別相談予約ページとは異なり、`server/routers.ts`のようなものはこのリポジトリには存在しません)。この構成自体はRailway・静的ホスティングのどちらでも動作しますが、今回はRailway連携済みのためRailwayを使います。
 
 ## 移管時に変更した点
 
-- Claude Code移管パッケージ(`growpal-lp-claude-code-handoff`)の内容をそのまま復元し、GitHub Pages公開用に以下を追加・調整しました。
-  - `vite.config.ts` に `VITE_BASE_PATH` 環境変数によるbase pathの切り替えを追加(プロジェクトページ配下 `/consul-lp/` での配信に対応)。
-  - `App.tsx` のwouterルーティングに `import.meta.env.BASE_URL` を基準としたrouter baseを設定。
-  - `Booking.tsx`・`Seminar.tsx` の予約完了画面(innerHTMLで生成)内の「LPに戻る」リンクを `import.meta.env.BASE_URL` 基準に変更。
-  - `.github/workflows/deploy.yml` を追加(`main` push時にビルドしてGitHub Pagesへ公開)。
+- Claude Code移管パッケージ(`growpal-lp-claude-code-handoff`)の内容をそのまま復元しました。
 - `client/src/components/ManusDialog.tsx` と `client/src/const.ts` の `getLoginUrl` はManus OAuthの名残ですが、`App.tsx` からは参照されておらず未使用です。削除はせずコードとして残しています。

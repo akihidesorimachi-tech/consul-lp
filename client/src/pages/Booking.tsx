@@ -204,7 +204,7 @@ export default function Booking() {
                 <p style="font-weight:bold; color:black;">070-9097-3341</p>
               </div>
             </div>
-            <a href="${import.meta.env.BASE_URL}" style="margin-top:30px; color:#1a2a4a; font-weight:bold; text-decoration:none; border:2px solid #1a2a4a; padding:12px 24px; border-radius:4px;">LPに戻る</a>
+            <a href="/" style="margin-top:30px; color:#1a2a4a; font-weight:bold; text-decoration:none; border:2px solid #1a2a4a; padding:12px 24px; border-radius:4px;">LPに戻る</a>
           </div>
         `;
       }
