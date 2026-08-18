@@ -1,0 +1,193 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ============================================================
+   Design Philosophy: Banner-Unified Style
+   - White base (#FAFAFA / #FFFFFF)
+   - Navy accent (#1a2a4a / #1e3a6e)
+   - Orange highlight (#E8460A / #FF6B35)
+   - Hand-drawn / notebook sketch aesthetic
+   - Font: Hiragino Kaku Gothic ProN (system), Noto Sans JP fallback
+   ============================================================ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-navy: var(--navy);
+  --color-orange: var(--orange);
+  --color-orange-light: var(--orange-light);
+}
+
+:root {
+  --radius: 0.5rem;
+  /* Brand colors matching banner */
+  --navy: #1a2a4a;
+  --navy-mid: #1e3a6e;
+  --orange: #E8460A;
+  --orange-light: #FF6B35;
+  --orange-pale: #FFF0EB;
+
+  --background: #FAFAFA;
+  --foreground: #1a2a4a;
+  --card: #FFFFFF;
+  --card-foreground: #1a2a4a;
+  --popover: #FFFFFF;
+  --popover-foreground: #1a2a4a;
+  --primary: #E8460A;
+  --primary-foreground: #FFFFFF;
+  --secondary: #F5F5F5;
+  --secondary-foreground: #1a2a4a;
+  --muted: #F0F0F0;
+  --muted-foreground: #6B7280;
+  --accent: #FFF0EB;
+  --accent-foreground: #E8460A;
+  --destructive: #E8460A;
+  --destructive-foreground: #FFFFFF;
+  --border: #E5E7EB;
+  --input: #E5E7EB;
+  --ring: #E8460A;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    box-sizing: border-box;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    /* Hiragino Kaku Gothic ProN → Noto Sans JP fallback (matches banner) */
+    font-family: "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3",
+      "Noto Sans JP", "Yu Gothic", "游ゴシック", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  a[href] {
+    cursor: pointer;
+  }
+}
+
+@layer components {
+  .container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    max-width: 640px;
+  }
+
+  .flex {
+    min-height: 0;
+    min-width: 0;
+  }
+
+  /* Sketch border effect - hand-drawn look */
+  .sketch-border {
+    border: 2px solid var(--navy);
+    border-radius: 2px;
+    position: relative;
+  }
+  .sketch-border::before {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    border: 1px solid rgba(26, 42, 74, 0.15);
+    border-radius: 2px;
+    pointer-events: none;
+  }
+
+  /* Orange underline accent */
+  .orange-underline {
+    position: relative;
+    display: inline-block;
+  }
+  .orange-underline::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--orange);
+    border-radius: 2px;
+  }
+
+  /* Pulse animation for CTA */
+  @keyframes pulse-orange {
+    0%, 100% { box-shadow: 0 4px 20px rgba(232, 70, 10, 0.35); }
+    50% { box-shadow: 0 4px 32px rgba(232, 70, 10, 0.6), 0 0 0 6px rgba(232, 70, 10, 0.12); }
+  }
+  .pulse-orange {
+    animation: pulse-orange 2.2s ease-in-out infinite;
+  }
+
+  /* Shake animation */
+  @keyframes shake-anim {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-12deg); }
+    75% { transform: rotate(12deg); }
+  }
+  .shake {
+    animation: shake-anim 1.8s ease-in-out infinite;
+  }
+
+  /* Fade in up */
+  @keyframes fade-in-up {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-in-up {
+    animation: fade-in-up 0.35s ease forwards;
+  }
+
+  /* Notebook paper texture lines */
+  .notebook-bg {
+    background-image: repeating-linear-gradient(
+      transparent,
+      transparent 27px,
+      rgba(26, 42, 74, 0.06) 27px,
+      rgba(26, 42, 74, 0.06) 28px
+    );
+  }
+
+  /* Tag pill - sketch style */
+  .sketch-tag {
+    display: inline-block;
+    border: 2px solid var(--navy);
+    border-radius: 999px;
+    padding: 4px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--navy);
+    background: white;
+    position: relative;
+  }
+}
